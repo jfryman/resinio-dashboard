@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+set -x
+
+URL=${URL:-http://localhost}
+
+if [ ! -z "${DISABLE_X}" ]; then
+
+  Xorg &
+
+  echo "Waiting for X to be ready"
+  export DISPLAY=:0
+
+  while ! feh --bg-scale /etc/wallpaper.png; do sleep 1; done
+  matchbox-window-manager -use_cursor no &
+
+  while ! curl -sf -o /dev/null "$URL"; do sleep 1; done
+
+  xset -dpms
+  xset s off
+  xset s noblank
+
+  iceweasel "$URL" &
+
+  sleep 60
+
+  echo "Setting full-screen"
+  xdotool key F11
+fi
+
+# Keep it going foreva!
+sleep infinity

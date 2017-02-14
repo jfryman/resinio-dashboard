@@ -1,0 +1,5 @@
+#!/usr/bin/env
+
+sed 's/resin\/%%RESIN_MACHINE_NAME%%-buildpack-deps/debian/g' Dockerfile.template > Dockerfile
+
+docker build .
